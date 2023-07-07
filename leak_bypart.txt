@@ -1,0 +1,46 @@
+Direct leaks track
+==========================
+
+Part 0:
+cpath_new
+ls_parse_prefix
+nhrp_peer_create
+
+Part 1:
+[Nothing]
+
+Part 2:
+[Nothing]
+
+Part 3:
+ecommunity_new (Will be fixed by PR #13918)
+info_make
+list_new (Working on it in PR #13623)
+prefix_copy
+
+Part 4:
+[Nothing]
+
+Part 5:
+[Nothing]
+
+Part 6:
+ecommunity_dup
+evpn_configure_vrf_rd (Wil be fixed by PR #13925)
+nexthop_new (Will be fixed by PR #13927)
+
+Part 7:
+[Nothing]
+
+Part 8:
+[Nothing]
+
+Part 9:
+list_new
+ospf6_lsa_alloc
+ospf_area_range_new
+ospf_external_aggregator_new
+ospf_lsa_new (20 out of 30 should be fixed by PR #13936)
+ospf_spf_vertex_parent_copy
+vertex_parent_new
+
