@@ -1,0 +1,43 @@
+cpath_new lib/cspf.c:44
+ 	ryndia - gave up
+
+ecommunity_new bgpd/bgp_ecommunity.c:40
+	Someone else PR13918
+
+ecommunity_dup bgpd/bgp_ecommunity.c:252
+ 	logan
+
+info_make bgpd/bgp_route.c:3955
+ 	Keelan
+
+list_new lib/linklist.c:49
+
+ls_parse_prefix lib/link_state.c:1321
+
+nhrp_peer_create nhrpd/nhrp_peer.c:175
+	rod
+
+ospf6_lsa_alloc ospf6d/ospf6_lsa.c:710
+	ryndia
+
+ospf_area_range_new ospfd/ospf_abr.c:43
+
+ospf_external_aggregator_new ospfd/ospf_asbr.c:396
+
+ospf_lsa_new ospfd/ospf_lsa.c:186
+ 	ryndia - fix pending CI RUN
+
+ospf_spf_vertex_parent_copy ospfd/ospf_spf.c:350
+ 	ryndia
+
+prefix_copy lib/prefix.c:346
+
+vertex_parent_new ospfd/ospf_spf.c:157
+
+DONE:
+evpn_configure_vrf_rd bgpd/bgp_evpn_vty.c:2297
+	Keelan - PR13925 - committed
+
+nexthop_new lib/nexthop.c:358
+	Keelan - PR13927 - committed
+
