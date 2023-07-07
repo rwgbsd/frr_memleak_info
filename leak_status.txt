@@ -20,6 +20,29 @@ ecommunity_new bgpd/bgp_ecommunity.c:40
 ecommunity_dup bgpd/bgp_ecommunity.c:252
  	logan
 
+/* Extended Communities attribute.  */
+struct ecommunity {
+	/* Reference counter.  */
+	unsigned long refcnt;
+
+	/* Size of Each Unit of Extended Communities attribute.
+	 * to differentiate between IPv6 ext comm and ext comm
+	 */
+	uint8_t unit_size;
+
+	/* Size of Extended Communities attribute.  */
+	uint32_t size;
+
+	/* Extended Communities value.  */
+	uint8_t *val;
+
+	/* Human readable format string.  */
+	char *str;
+
+	/* Disable IEEE floating-point encoding for extended community */
+	bool disable_ieee_floating;
+};
+
 info_make bgpd/bgp_route.c:3955
  	Keelan
 
