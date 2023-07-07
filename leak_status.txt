@@ -1,6 +1,19 @@
 cpath_new lib/cspf.c:44
  	ryndia - gave up
 
+cspf_topo1.test_cspf_topo1/r1.asan.sharpd
+
+//../lib/cspf.h:
+/* Constrained Path structure */
+struct c_path {
+    struct pqueue_item q_itm;    /* entry in the Priority Queue */
+    uint32_t weight;             /* Weight to sort path in Priority Queue */
+    struct processed_item p_itm; /* entry in the Processed RB Tree */
+    uint64_t dst;                /* Destination vertex key of this path */
+    struct list *edges;          /* List of Edges that compose this path */
+    enum path_status status;     /* status of the computed path */
+};
+
 ecommunity_new bgpd/bgp_ecommunity.c:40
 	Someone else PR13918
 
@@ -12,27 +25,207 @@ info_make bgpd/bgp_route.c:3955
 
 list_new lib/linklist.c:49
 
+cspf_topo1.test_cspf_topo1/r1.asan.sharpd
+
+//../lib/linklist.h:
+struct list {
+    struct listnode *head;
+    struct listnode *tail;
+
+    /* invariant: count is the number of listnodes in the list */
+    unsigned int count;
+
+    uint8_t flags;
+/* Indicates that listnode memory is managed by the application and
+ * doesn't need to be freed by this library via listnode_delete etc.
+ */
+#define LINKLIST_FLAG_NODE_MEM_BY_APP (1 << 0)
+
+    /*
+     * Returns -1 if val1 < val2, 0 if equal?, 1 if val1 > val2.
+     * Used as definition of sorted for listnode_add_sort
+     */
+    int (*cmp)(void *val1, void *val2);
+
+    /* callback to free user-owned data when listnode is deleted. supplying
+     * this callback is very much encouraged!
+     */
+    void (*del)(void *val);
+};
+
 ls_parse_prefix lib/link_state.c:1321
+
+cspf_topo1.test_cspf_topo1/r1.asan.sharpd
+
+//../lib/link_state.h:
+/* Link State Prefix */
+struct ls_prefix {
+    uint8_t flags;          /* Flag for parameters validity */
+    struct ls_node_id adv;      /* Adv. Router of this Link State */
+    struct prefix pref;     /* IPv4 or IPv6 prefix */
+    uint8_t igp_flag;       /* IGP Flags associated to the prefix */
+    uint32_t route_tag;     /* IGP Route Tag */
+    uint64_t extended_tag;      /* IGP Extended Route Tag */
+    uint32_t metric;        /* Route metric for this prefix */
+    struct ls_sid {
+        uint32_t sid;       /* Segment Routing ID */
+        uint8_t sid_flag;   /* Segment Routing Flags */
+        uint8_t algo;       /* Algorithm for Segment Routing */
+    } sr;
+};
+
 
 nhrp_peer_create nhrpd/nhrp_peer.c:175
 	rod
 
+nhrp_topo.test_nhrp_topo/r2.asan.nhrpd
+
+//../nhrpd/nhrpd.h:
+struct nhrp_peer {
+    unsigned int ref;
+    unsigned online : 1;
+    unsigned requested : 1;
+    unsigned fallback_requested : 1;
+    unsigned prio : 1;
+    struct notifier_list notifier_list;
+    struct interface *ifp;
+    struct nhrp_vc *vc;
+    struct event *t_fallback;
+    struct notifier_block vc_notifier, ifp_notifier;
+    struct event *t_timer;
+};
+
 ospf6_lsa_alloc ospf6d/ospf6_lsa.c:710
 	ryndia
 
+ospf6_gr_topo1.test_ospf6_gr_topo1/rt3.asan.ospf6d
+
+//../ospf6d/ospf6_lsa.h:
+struct ospf6_lsa {
+    char name[64]; /* dump string */
+
+    struct route_node *rn;
+
+    unsigned char lock; /* reference counter */
+    unsigned char flag; /* special meaning (e.g. floodback) */
+
+    struct timeval birth;      /* tv_sec when LS age 0 */
+    struct timeval originated; /* used by MinLSInterval check */
+    struct timeval received;   /* used by MinLSArrival check */
+    struct timeval installed;
+
+    struct event *expire;
+    struct event *refresh; /* For self-originated LSA */
+
+    int retrans_count;
+
+    struct ospf6_lsdb *lsdb;
+
+    in_addr_t external_lsa_id;
+
+    /* lsa instance */
+    struct ospf6_lsa_header *header;
+
+    /*For topo chg detection in HELPER role*/
+    bool tobe_acknowledged;
+};
+
+
+
 ospf_area_range_new ospfd/ospf_abr.c:43
 
+ospf_tilfa_topo1.test_ospf_tilfa_topo1/rt2.asan.ospfd
+
+//../ospf/ospf_abr.h
+/* Area range. */
+struct ospf_area_range {
+    /* Area range address. */
+    struct in_addr addr;
+
+    /* Area range masklen. */
+    uint8_t masklen;
+
+    /* Flags. */
+    uint8_t flags;
+
+    /* Number of more specific prefixes. */
+    int specifics;
+
+    /* Addr and masklen to substitute. */
+    struct in_addr subst_addr;
+    uint8_t subst_masklen;
+
+    /* Range cost. */
+    uint32_t cost;
+
+    /* Configured range cost. */
+    uint32_t cost_config;
+};
+
+
+
 ospf_external_aggregator_new ospfd/ospf_asbr.c:396
+
+ospf_tilfa_topo1.test_ospf_tilfa_topo1/
+
+//../ospfd/ospf_asbr.h
+struct ospf_external_aggr_rt {
+    /* Prefix. */
+    struct prefix_ipv4 p;
+
+    /* Bit 1 : Dont advertise.
+     * Bit 2 : Originated as Type-5
+     */
+    uint8_t flags;
+
+    /* Tag for summary route */
+    route_tag_t tag;
+
+    /* Action to be done at the delay
+     * timer expairy.
+     */
+    enum ospf_aggr_action_t action;
+
+    /* Hash Table of external routes */
+    struct hash *match_extnl_hash;
+};
+
+
 
 ospf_lsa_new ospfd/ospf_lsa.c:186
  	ryndia - fix pending CI RUN
 
+
+
 ospf_spf_vertex_parent_copy ospfd/ospf_spf.c:350
  	ryndia
 
+ospf_tilfa_topo1.test_ospf_tilfa_topo1/
+
+//../ospfd/ospf_spf.h
+struct vertex_parent {
+    struct vertex_nexthop *nexthop; /* nexthop taken on the root node */
+    struct vertex_nexthop *local_nexthop; /* local nexthop of the parent */
+    struct vertex *parent;            /* parent vertex */
+    int backlink; /* index back to parent for router-lsa's */
+};
+
+
 prefix_copy lib/prefix.c:346
 
+
+
 vertex_parent_new ospfd/ospf_spf.c:157
+
+ospf_tilfa_topo1.test_ospf_tilfa_topo1/
+
+//../ospfd/ospf_spf.h
+struct vertex_parent {
+    struct vertex_nexthop *nexthop; /* nexthop taken on the root node */
+    struct vertex_nexthop *local_nexthop; /* local nexthop of the parent */
+    struct vertex *parent;            /* parent vertex */
+    int backlink; /* index back to parent for router-lsa's */
+};
 
 DONE:
 evpn_configure_vrf_rd bgpd/bgp_evpn_vty.c:2297
